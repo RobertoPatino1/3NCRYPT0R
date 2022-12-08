@@ -6,4 +6,4 @@
 clean:
 	rm *.o
 	rm *.out
-	rm programa
+	rm crypt
