@@ -13,6 +13,7 @@ help.o: implmt/help.c help.h
 
 .PHONY: clean
 clean:
+	rm crypt
 	rm *.o
 	rm *.out
 	rm crypt
