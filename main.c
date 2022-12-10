@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <string.h>
-
+#include "help.h"
 
 /*
 Flag declarations:
@@ -38,7 +38,7 @@ int main(int argc, char **argv){
         	 switch(opt){
                         case 'h':
 				//TODO
-                                //print_help(argv[0]);	Print a help menu for the user
+                                print_help();	//Prints the help menu
                                 return 0;
                         case 'd':
 				//TODO: Call a display function
