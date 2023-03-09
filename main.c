@@ -8,13 +8,13 @@
 #include <string.h>
 #include <getopt.h>
 #include <dirent.h>
-#include "libsha1.h"
-#include "blowfish.h"
+#include "resources/libsha1.h"
+#include "resources/blowfish.h"
 
 //Declaracion de flags
 bool dflag = false;	//Flag para validar si tenemos que desencriptar un archivo
 bool fflag = false;	//Flag para validar si tenemos que encriptar/desencriptar una carpeta completa
-
+bool kflag = false;
 
 //Imprime cadena de bytes en formato hexadecimal
 static void print_hex(const char* data, size_t size){
@@ -77,6 +77,7 @@ int main(int argc, char **argv){
 				print_help(argv[0]);
 				return 0;
 			case 'k':
+				kflag = true;
 				keyword = optarg;
         		break;
 			case '?':
@@ -94,6 +95,14 @@ int main(int argc, char **argv){
 		//Caso contrario se trata de un archivo
 		for (index = optind; index < argc; index++)
 			input_file = argv[index];
+	}
+
+	//En caso de que no se especifique la opcion -k
+	if(!kflag){
+		fprintf(stderr, "Debe utilizar la opcion -k para especificar la palabra clave.\n");
+		fprintf(stderr, "uso: %s [-d] -k <key> <nombre_archivo|nombre_carpeta>\n", argv[0]);
+                fprintf(stderr, "     %s -h\n", argv[0]);
+		return 1;
 	}
 
 	if(!input_file && !input_folder){
@@ -118,12 +127,11 @@ int main(int argc, char **argv){
                 }else
                         printf("Leyendo el archivo %s (%ld bytes)...\n", input_file, mi_stat.st_size);
 	}
-	
+
 	l = strlen(keyword)+1;
 	/*
 	Encriptando con SHA-1 la palabra clave ingresada
 	*/
-	/*
 	sha1_ctx ctx; //Contexto para hash sha1
 	char dgst[SHA1_DIGEST_SIZE]; //resultado final hash sha1
 	sha1_begin(&ctx);
@@ -132,16 +140,15 @@ int main(int argc, char **argv){
 
 	sha1_end(dgst, &ctx);
 
-	//TODO: OMITIR ESTA PARTE???
-	printf("La clave \'%s\' en SHA1 es: \n",keyword);
-	print_hex(dgst, SHA1_DIGEST_SIZE);
 
 	//Obteniendo solo los primeros 16 caracteres
 	char new_keyword[16];
 	get_hex(dgst,new_keyword);
-	if(!dflag)
-		printf("\nLos 16 caracteres de la clave en SHA1 son: %s\n",new_keyword);
-	*/
+	if(!dflag){
+		printf("La clave \'%s\' en SHA1 es: \n",keyword);
+                print_hex(dgst, SHA1_DIGEST_SIZE);
+		printf("\nSu clave encriptada de 16 caracteres es: %s\n",new_keyword);
+	}
 	//Creando los directorios en tiempo de ejecucion
 	int dir1Check;
 	int dir2Check;
@@ -160,19 +167,20 @@ int main(int argc, char **argv){
 	if(dflag){
 		//Si desencriptamos, usamos la clave pasada directo
 		for(k=0;k<8;k++){
-                        sscanf(keyword + 2*i,"%2hx", &byte);
-                        key_arg[i] = (BYTE) byte;
+                        sscanf(keyword + 2*k,"%2hx", &byte);
+                        key_arg[k] = (BYTE) byte;
                 }
 	}else{
 		//Si no desencriptamos, transformamos la clave
 		for(k=0;k<8;k++){
-			sscanf(keyword + 2*i,"%2hx", &byte);
-			key_arg[i] = (BYTE) byte;
+			sscanf(new_keyword + 2*k,"%2hx", &byte);
+			key_arg[k] = (BYTE) byte;
 		}
 	}
 
+
 	//Creando los archivos encritpados/desencriptados y ubicandolos en sus respectivas carpetas
-	
+
 	if(fflag){
 		//En caso de tratarse de una carpeta...
 		struct dirent *de; // Pointer for directory entry
@@ -184,21 +192,28 @@ int main(int argc, char **argv){
    			 printf("No se pudo abrir el directorio especificado");
    			 return 0;
  		 }
+		strcat(input_folder,"/");
 
   		while ((de = readdir(dr)) != NULL){
 			//Iteramos solo sobre los archivos del directorio
 			if(strcmp(de->d_name,".")!=0 && strcmp(de->d_name,"..")!=0){
 				//Ahora solo replicamos la logica para cada archivo iterado
 				char *output_file = (char*) calloc(strlen(de->d_name)+5,sizeof(char));
+				input_file = de->d_name;
+				//Destino y origen de los archivos a manipular
 				char *dest;
-				strcpy(output_file,de->d_name); //Usando strcopy para pasar contenido de input_file a output_file
+				char *src = (char*) calloc(strlen(input_folder)+strlen(input_file)+5,sizeof(char));
+
+				strcpy(src,input_folder);
+				strcpy(output_file,input_file); //Usando strcopy para pasar contenido de input_file a output_file
 				if(dflag){
-					dest = (char*) calloc(strlen("archivos_desencriptados/")+strlen(de->d_name)+5,sizeof(char));
+					dest = (char*) calloc(strlen("archivos_desencriptados/")+strlen(input_file)+5,sizeof(char));
 					strcpy(dest,"archivos_desencriptados/");
 		 		}else{
-					dest = (char*) calloc(strlen("archivos_encriptados/")+strlen(de->d_name)+5,sizeof(char));
+					dest = (char*) calloc(strlen("archivos_encriptados/")+strlen(input_file)+5,sizeof(char));
 					strcpy(dest,"archivos_encriptados/");
 				}
+				strcat(src,input_file);
 				strcat(dest,output_file);
 				//Encriptando o desencriptando cada archivo:
 				int fd_output = open(dest,O_CREAT|O_TRUNC|O_WRONLY,S_IRUSR|S_IWUSR);
@@ -206,8 +221,10 @@ int main(int argc, char **argv){
 				BYTE output_buf[BLOWFISH_BLOCK_SIZE];
 				BLOWFISH_KEY key;
 				blowfish_key_setup(key_arg, &key, BLOWFISH_BLOCK_SIZE);
+
 				//Leyendo el archivo
-				int fd_input = open(de->d_name,O_RDONLY,0);
+				int fd_input = open(src,O_RDONLY,0);
+
 				while(read(fd_input,input_buf,BLOWFISH_BLOCK_SIZE)>0){
 					if(dflag){
 						//Desencriptar
@@ -227,10 +244,12 @@ int main(int argc, char **argv){
 					printf("Archivo %s encriptado exitosamente en %s...\n",de->d_name,dest);
 				}
 				// closes and free calloc
+
 				close(fd_input);
 				close(fd_output);
 				free(output_file);
 				free(dest);
+
 
 			}
 
