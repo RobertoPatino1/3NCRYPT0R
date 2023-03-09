@@ -1,4 +1,4 @@
-EXEC = secret
+EXEC = 3NCRYPT0R
 DEPS = resources/blowfish.h
 
 
