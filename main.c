@@ -44,7 +44,23 @@ static void get_hex(char* input, char* output){
 
 }
 
-
+void print_logo(){
+	printf(GRN"                                                                                ,----,                        \n");
+	printf("  .--,-``-.             ,--.                                 ,-.----.         ,/   .`|                        \n");
+	printf(" /   /     '.         ,--.'|  ,----..  ,-.----.              \\    /  \\      ,`   .'  :  ,----..   ,-.----.    \n");
+	printf("/ ../        ;    ,--,:  : | /   /   \\ \\    /  \\        ,---,|   :    \\   ;    ;     / /   /   \\  \\    /  \\   \n");
+	printf("\\ ``\\  .`-    ',`--.'`|  ' :|   :     :;   :    \\      /_ ./||   |  .\\ :.'___,/    ,' /   .     : ;   :    \\  \n");
+	printf(" \\___\\/   \\   :|   :  :  | |.   |  ;. /|   | .\\ :,---, |  ' :.   :  |: ||    :     | .   /   ;.  \\|   | .\\ :  \n");
+	printf("      \\   :   |:   |   \\ | :.   ; /--` .   : |: /___/ \\.  : ||   |   \\ :;    |.';  ;.   ;   /  ` ;.   : |: |  \n");
+	printf("      /  /   / |   : '  '; |;   | ;    |   |  \\ :.  \\  \\ ,' '|   : .   /`----'  |  |;   |  ; \\ ; ||   |  \\ :  \n");
+	printf("      \\  \\   \\ '   ' ;.    ;|   : |    |   : .  / \\  ;  `  ,';   | |`-'     '   :  ;|   :  | ; | '|   : .  /  \n");
+	printf("  ___ /   :   ||   | | \\   |.   | '___ ;   | |  \\  \\  \\    ' |   | ;        |   |  '.   |  ' ' ' :;   | |  \\  \n");
+	printf(BLU" /   /\\   /   :'   : |  ; .''   ; : .'||   | ;\\  \\  '  \\   | :   ' |        '   :  |'   ;  \\; /  ||   | ;\\  \\ \n");
+	printf("/ ,,/  ',-    .|   | '`--'  '   | '/  ::   ' | \\.'   \\  ;  ; :   : :        ;   |.'  \\   \\  ',  / :   ' | \\.' \n");
+	printf("\\ ''\\        ; '   : |      |   :    / :   : :-'      :  \\  \\|   | :        '---'     ;   :    /  :   : :-'   \n");
+	printf(" \\   \\     .'  ;   |.'       \\   \\ .'  |   |.'         \\  ' ;`---'.|                   \\   \\ .'   |   |.'     \n");
+	printf("  `--`-,,-'    '---'          `---`    `---'            `--`   `---`                    `---`     `---'       \n" RESET);
+}
 void print_help(char *command)
 {
         printf("Welcome to 3NCRYPT0R!\n");
@@ -71,6 +87,7 @@ int main(int argc, char **argv){
 	ssize_t l = 0;
 	int i;
 	
+	print_logo();
 	while ((opt = getopt (argc, argv, "dhk:f")) != -1){
 		switch(opt)
 		{
@@ -87,7 +104,7 @@ int main(int argc, char **argv){
 				kflag = true;
 				keyword = optarg;
         		break;
-			case '?':
+
 			default:
 				fprintf(stderr, "Usage: %s [-d] -k <key> <file_name|directory>\n", argv[0]);
 				fprintf(stderr, "     %s -h\n", argv[0]);
