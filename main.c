@@ -56,12 +56,11 @@ void print_logo(){
 	printf(" \\   \\     .'  ;   |.'       \\   \\ .'  |   |.'         \\  ' ;`---'.|                   \\   \\ .'   |   |.'     \n");
 	printf("  `--`-,,-'    '---'          `---`    `---'            `--`   `---`                    `---`     `---'       \n" RESET);
 }
-void print_help(char *command)
+void print_help()
 {
 	print_logo();
 	printf("Welcome to 3NCRYPT0R!\n");
-	printf("Usage:\n %s [-d] [-f] -k <key> <file_name|directory>\n", command);
-	printf(" %s -h\n", command);
+	printf("Usage:\n[-d] [-f] -k <key> <file_name|directory>\n");
 	printf("Options:\n");
 	printf(" -h\t\t\tHelp, shows the current message\n");
 	printf(" -d\t\t\tDecrypts the specified file/directory passed as a parameter.\n");
@@ -94,14 +93,18 @@ int main(int argc, char **argv){
 				fflag = true;
 				break;
 			case 'h':
-				print_help(argv[0]);
+				print_help();
 				return 0;
 			case 'k':
 				kflag = true;
 				keyword = optarg;
         		break;
+			case '?':
+				print_help();
+				break;
 
 			default:
+				print_help();
 				fprintf(stderr, "Usage: %s [-d] -k <key> <file_name|directory>\n", argv[0]);
 				fprintf(stderr, "     %s -h\n", argv[0]);
 				return 1;
@@ -122,7 +125,7 @@ int main(int argc, char **argv){
 	if(!kflag){
 		fprintf(stderr, RED "The option -k must be used in order to specify the keyword.\n" RESET);
 		fprintf(stderr, "Usage: %s [-d] -k <key> <file_name|directory>\n", argv[0]);
-		fprintf(stderr, "     %s -h\n", argv[0]);
+		fprintf(stderr, "Help menu:     %s -h\n", argv[0]);
 		return 1;
 	}
 
