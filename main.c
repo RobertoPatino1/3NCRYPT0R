@@ -23,12 +23,7 @@ bool dflag = false;	//This flag validates if the user wants to decrypt
 bool fflag = false;	//This flag validates if the user wants to encrypt/decrypt an entire directory
 bool kflag = false; //This flag corresponds to the specified key
 
-//This function prints a byte string in hex format
-static void print_hex(const char* data, size_t size){
-        int i;
-        for(i = 0; i < size; ++i)
-                printf("%02x",(unsigned char) data[i]);
-}
+
 
 //This function assigns the hex value of the key in sha1 (16 characters) to the output variable
 static void get_hex(char* input, char* output){
@@ -63,14 +58,15 @@ void print_logo(){
 }
 void print_help(char *command)
 {
-        printf("Welcome to 3NCRYPT0R!\n");
-        printf("Usage:\n %s [-d] [-f] -k <key> <file_name|directory>\n", command);
-        printf(" %s -h\n", command);
-        printf("Options:\n");
-        printf(" -h\t\t\tHelp, shows the current message\n");
-        printf(" -d\t\t\tDecrypts the specified file/directory passed as a parameter.\n");
-		printf(" -f\t\t\tEncrypts/Decrypts a specified directory passed as a parameter.\n");
-        printf(" -k <key>\t\tTakes the de encription key as a parameter.\n");
+	print_logo();
+	printf("Welcome to 3NCRYPT0R!\n");
+	printf("Usage:\n %s [-d] [-f] -k <key> <file_name|directory>\n", command);
+	printf(" %s -h\n", command);
+	printf("Options:\n");
+	printf(" -h\t\t\tHelp, shows the current message\n");
+	printf(" -d\t\t\tDecrypts the specified file/directory passed as a parameter.\n");
+	printf(" -f\t\t\tEncrypts/Decrypts a specified directory passed as a parameter.\n");
+	printf(" -k <key>\t\tTakes the de encription key as a parameter.\n");
 }
 
 
@@ -87,7 +83,7 @@ int main(int argc, char **argv){
 	ssize_t l = 0;
 	int i;
 	
-	print_logo();
+	
 	while ((opt = getopt (argc, argv, "dhk:f")) != -1){
 		switch(opt)
 		{
