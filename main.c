@@ -15,7 +15,7 @@
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
 #define BLU   "\x1B[34m"
-#define CYN   "\x1B[36m"
+#define YEL   "\x1B[33m"
 #define RESET "\x1B[0m"
 
 //Flag declarations
@@ -151,22 +151,29 @@ int main(int argc, char **argv){
 	char new_keyword[16];
 	get_hex(dgst,new_keyword);
 	if(!dflag){
-		printf("The SHA1 of the keyword \'%s\' is: \n",keyword);
-                print_hex(dgst, SHA1_DIGEST_SIZE);
-		printf(GRN "\nYour 16 character encrypted keyword is: %s\n" RESET,new_keyword );
+		// printf("The SHA1 of the keyword \'%s\' is: \n",keyword);
+        //         print_hex(dgst, SHA1_DIGEST_SIZE);
+		printf(GRN "\nYour 16 character encrypted keyword is: " RESET );
+		printf(YEL "%s\n" RESET,new_keyword);
+		printf(RED "WARNING: " RESET);
+		printf("Make sure to save the encrypted keyword as it is the only way of decrypting this file/folder\n");
 	}
 	//Creating the directories to store encrypted/decrypted files at runtime
 	int dir1Check;
 	int dir2Check;
-	printf(BLU "Creating directory: \"encrypted_files\"\n" RESET);
-	dir1Check = mkdir("encrypted_files",0777);
-	printf(GRN "Encryption directory successfully created\n" RESET);
-
-	printf(BLU "Creating directory: \"decrypted_files\"\n" RESET);
-	dir2Check = mkdir("decrypted_files",0777);
+	DIR* encr_dir = opendir("encrypted_files");
+	DIR* decr_dir = opendir("decrypted_files");
+	if(!encr_dir){
+		printf(BLU "Creating directory: \"encrypted_files\"\n" RESET);
+		dir1Check = mkdir("encrypted_files",0777);
+		printf(GRN "Encryption directory successfully created\n" RESET);
+	}
 	
-	printf(GRN "Decryption directory successfully created\n" RESET);
-
+	if(!decr_dir){
+		printf(BLU "Creating directory: \"decrypted_files\"\n" RESET);
+		dir2Check = mkdir("decrypted_files",0777);
+		printf(GRN "Decryption directory successfully created\n" RESET);
+	}
 
 	/*
 	Encrypting or decrypting the specified file/folder
@@ -254,9 +261,16 @@ int main(int argc, char **argv){
 				}
 
 				if(dflag){
-					printf(GRN "The file \"%s\" has been successfully decrypted and stored in the directory \"%s\"...\n" RESET,de->d_name,dest);
+					printf(GRN "The file" RESET);
+					printf(BLU " \"%s\"" RESET,de->d_name);
+					printf(GRN " has been successfully decrypted and stored as:" RESET);
+					printf(BLU " \"%s\"\n" RESET,dest);
+
 				}else{
-					printf(GRN "The file \"%s\" has been successfully encrypted in the directory \"%s\"...\n" RESET,de->d_name,dest);
+					printf(GRN "The file" RESET);
+					printf(BLU " \"%s\"" RESET,de->d_name);
+					printf(GRN " has been successfully encrypted and stored as:" RESET);
+					printf(BLU " \"%s\"\n" RESET,dest);
 				}
 				// closes and free calloc
 
@@ -308,9 +322,15 @@ int main(int argc, char **argv){
 		}
 
 		if(dflag){
-			printf(GRN "The file \"%s\" has been successfully decrypted and stored in the directory \"%s\"...\n" RESET,input_file,dest);
+			printf(GRN "The file" RESET);
+			printf(BLU " \"%s\"" RESET,input_file);
+			printf(GRN " has been successfully decrypted and stored as:" RESET);
+			printf(BLU " \"%s\"\n" RESET,dest);
 		}else{
-			printf(GRN "The file \"%s\" has been successfully encrypted and stored in the directory \"%s\"...\n" RESET,input_file,dest);
+			printf(GRN "The file" RESET);
+			printf(BLU " \"%s\"" RESET,input_file);
+			printf(GRN " has been successfully encrypted and stored as:" RESET);
+			printf(BLU " \"%s\"\n" RESET,dest);
 		}
 		// closes and free calloc
 		close(fd_input);
