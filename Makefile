@@ -1,19 +1,21 @@
-HELP = includes/functions/help.h
+EXEC = secret
+DEPS = blowfish.h
 
-crypt: main.o help.o
-	gcc -o crypt main.o help.o $(HELP)
+# Target to compile final exec file
+$(EXEC): main.o blowfish.o $(DEPS)
+        gcc -static  -o $@ main.o blowfish.o $(DFLAGS) libsha1.a
 
-main.o: main.c $(HELP)
-	gcc -c main.c 
+%.o: %.c $(DEPS)
+        gcc -c $< $(DFLAGS)
 
-help.o: implmt/help.c help.h
-	gcc -c implmt/help.c
+.PHONY: sanitize debug clean
+# Compiles using -g for debugging purpuses
+debug: DFLAGS = -g
+debug: clean $(EXEC)
 
+sanitize: DFLAGS = -fsanitize=address,undefined
+sanitize: clean $(EXEC)
 
-
-.PHONY: clean
 clean:
-	rm crypt
-	rm *.o
-	rm *.out
-	rm crypt
+        rm -rf $(EXEC) *.o *.enc *.dec
+        rm -rf archivos_*
