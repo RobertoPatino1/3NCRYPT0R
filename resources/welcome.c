@@ -22,7 +22,8 @@ void print_logo(){
 	printf("\\ ''\\        ; '   : |      |   :    / :   : :-'      :  \\  \\|   | :        '---'     ;   :    /  :   : :-'   \n");
 	printf(" \\   \\     .'  ;   |.'       \\   \\ .'  |   |.'         \\  ' ;`---'.|                   \\   \\ .'   |   |.'     \n");
 	printf("  `--`-,,-'    '---'          `---`    `---'            `--`   `---`                    `---`     `---'       \n\n" RESET);
-	printf("Welcome to 3NCRYPT0R!\nMake sure to check the help menu running the executable file as ./3NCRYPT0R -h\n");
+	printf("Welcome to 3NCRYPT0R!\nMake sure to check the help menu running the executable file as ");
+	printf(GRN"./3NCRYPT0R -h\n"RESET);
 }
 
 void main(){

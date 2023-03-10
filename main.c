@@ -39,23 +39,7 @@ static void get_hex(char* input, char* output){
 
 }
 
-// void print_logo(){
-// 	printf(GRN"                                                                                ,----,                        \n");
-// 	printf("  .--,-``-.             ,--.                                 ,-.----.         ,/   .`|                        \n");
-// 	printf(" /   /     '.         ,--.'|  ,----..  ,-.----.              \\    /  \\      ,`   .'  :  ,----..   ,-.----.    \n");
-// 	printf("/ ../        ;    ,--,:  : | /   /   \\ \\    /  \\        ,---,|   :    \\   ;    ;     / /   /   \\  \\    /  \\   \n");
-// 	printf("\\ ``\\  .`-    ',`--.'`|  ' :|   :     :;   :    \\      /_ ./||   |  .\\ :.'___,/    ,' /   .     : ;   :    \\  \n");
-// 	printf(" \\___\\/   \\   :|   :  :  | |.   |  ;. /|   | .\\ :,---, |  ' :.   :  |: ||    :     | .   /   ;.  \\|   | .\\ :  \n");
-// 	printf("      \\   :   |:   |   \\ | :.   ; /--` .   : |: /___/ \\.  : ||   |   \\ :;    |.';  ;.   ;   /  ` ;.   : |: |  \n");
-// 	printf("      /  /   / |   : '  '; |;   | ;    |   |  \\ :.  \\  \\ ,' '|   : .   /`----'  |  |;   |  ; \\ ; ||   |  \\ :  \n");
-// 	printf("      \\  \\   \\ '   ' ;.    ;|   : |    |   : .  / \\  ;  `  ,';   | |`-'     '   :  ;|   :  | ; | '|   : .  /  \n");
-// 	printf("  ___ /   :   ||   | | \\   |.   | '___ ;   | |  \\  \\  \\    ' |   | ;        |   |  '.   |  ' ' ' :;   | |  \\  \n");
-// 	printf(BLU" /   /\\   /   :'   : |  ; .''   ; : .'||   | ;\\  \\  '  \\   | :   ' |        '   :  |'   ;  \\; /  ||   | ;\\  \\ \n");
-// 	printf("/ ,,/  ',-    .|   | '`--'  '   | '/  ::   ' | \\.'   \\  ;  ; :   : :        ;   |.'  \\   \\  ',  / :   ' | \\.' \n");
-// 	printf("\\ ''\\        ; '   : |      |   :    / :   : :-'      :  \\  \\|   | :        '---'     ;   :    /  :   : :-'   \n");
-// 	printf(" \\   \\     .'  ;   |.'       \\   \\ .'  |   |.'         \\  ' ;`---'.|                   \\   \\ .'   |   |.'     \n");
-// 	printf("  `--`-,,-'    '---'          `---`    `---'            `--`   `---`                    `---`     `---'       \n" RESET);
-// }
+
 void print_help()
 {
 	// print_logo();
@@ -169,7 +153,7 @@ int main(int argc, char **argv){
 	if(!dflag){
 		// printf("The SHA1 of the keyword \'%s\' is: \n",keyword);
         //         print_hex(dgst, SHA1_DIGEST_SIZE);
-		printf(GRN "\nYour 16 character encrypted keyword is: " RESET );
+		printf(GRN "Your 16 character encrypted keyword is: " RESET );
 		printf(YEL "%s\n" RESET,new_keyword);
 		printf(RED "WARNING: " RESET);
 		printf("Make sure to save the encrypted keyword as it is the only way of decrypting this file/folder\n");
