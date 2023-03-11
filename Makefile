@@ -25,6 +25,7 @@ sanitize: clean $(EXEC)
 clean:
 	rm -rf $(EXEC) *.o *.enc *.dec
 	rm -rf *_files
+	rm -rf resources/welcome
 
 
 
