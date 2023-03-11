@@ -151,8 +151,6 @@ int main(int argc, char **argv){
 	char new_keyword[16];
 	get_hex(dgst,new_keyword);
 	if(!dflag){
-		// printf("The SHA1 of the keyword \'%s\' is: \n",keyword);
-        //         print_hex(dgst, SHA1_DIGEST_SIZE);
 		printf(GRN "Your 16 character encrypted keyword is: " RESET );
 		printf(YEL "%s\n" RESET,new_keyword);
 		printf(RED "WARNING: " RESET);
