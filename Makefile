@@ -9,16 +9,16 @@ $(EXEC): main.o resources/blowfish.o $(DEPS)
 
 
 
-$(info Building dependencies...) 
+
 resources/%.o: %.c $(DEPS)
-	gcc -c $< $(DFLAGS)
+	gcc -c $< $(DFLAGS) 
 
 .PHONY:  sanitize debug clean  
 
 debug: DFLAGS = -g
 debug: clean $(EXEC)
 
-$(info Generating executable file...)
+
 sanitize: DFLAGS = -fsanitize=address,undefined
 sanitize: clean $(EXEC)
 
